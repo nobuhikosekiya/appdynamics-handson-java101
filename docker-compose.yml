@@ -24,6 +24,8 @@ services:
     environment:
       MYSQL_HOST: 'supercars-mysql'
       MYSQL_PORT: '3306'
+    env_file:
+      - appdynamics-env
     expose:
       - "8080"
     ports:
@@ -42,6 +44,26 @@ services:
       - app-net
     depends_on:
       - tomcat
+
+  dbagent:
+    container_name: "supercar-dbagent"
+    build:
+      context: "dbagent"
+      dockerfile: "Dockerfile"
+    networks:
+      - app-net
+    env_file:
+      - appdynamics-env
+    depends_on:
+      - mysql
+
+  machineagent:
+    container_name: "supercar-machineagent"
+    build:
+      context: "machineagent"
+      dockerfile: "Dockerfile"
+    env_file:
+      - appdynamics-env
 
 networks:
   app-net:
