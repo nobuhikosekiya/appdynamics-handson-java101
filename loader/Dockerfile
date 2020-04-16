@@ -14,7 +14,7 @@ RUN cd /tmp && \
 
 ENV CLASSPATH /opt/grinder/grinder-${GRINDER_VERSION}/lib/grinder.jar
 
-COPY loader/ ./
+COPY ./ ./
 
 ENTRYPOINT ["java", "net.grinder.Grinder"]
 

@@ -4,8 +4,8 @@ services:
   mysql:
     container_name: supercars-mysql
     build:
-      context: "./"
-      dockerfile: "Dockerfile_mysql"
+      context: "mysql"
+      dockerfile: "Dockerfile"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_USER: "root"
@@ -19,8 +19,8 @@ services:
   tomcat:
     container_name: "supercars-tomcat"
     build:
-      context: "./"
-      dockerfile: "Dockerfile_tomcat"
+      context: "tomcat"
+      dockerfile: "Dockerfile"
     environment:
       MYSQL_HOST: 'supercars-mysql'
       MYSQL_PORT: '3306'
@@ -36,8 +36,8 @@ services:
   loader:
     container_name: "supercars-loader"
     build:
-      context: "./"
-      dockerfile: "Dockerfile_loader"
+      context: "loader"
+      dockerfile: "Dockerfile"
     networks:
       - app-net
     depends_on:

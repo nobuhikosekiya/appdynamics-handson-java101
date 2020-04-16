@@ -9,7 +9,7 @@ FROM tomcat:8.5.35
 RUN echo 'export CATALINA_OPTS="$CATALINA_OPTS -Dmysql.host=${MYSQL_HOST} -Dmysql.port=${MYSQL_PORT}"' >> /usr/local/tomcat/bin/setenv.sh
 
 COPY --from=builder /usr/src/myapp/target/Cars_Sample_App-1.0-SNAPSHOT.war  /usr/local/tomcat/webapps/Cars_Sample_App.war
-COPY tomcat/context.xml /usr/local/tomcat/conf/context.xml
+COPY context.xml /usr/local/tomcat/conf/context.xml
 
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
