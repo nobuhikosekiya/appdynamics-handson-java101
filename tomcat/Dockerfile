@@ -14,10 +14,14 @@ COPY context.xml /usr/local/tomcat/conf/context.xml
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
 
-RUN echo 'export CATALINA_OPTS="$CATALINA_OPTS -javaagent:/opt/appdynamics/appagent/javaagent.jar -Dappdynamics.controller.hostName=${APPDYNAMICS_CONTROLLER_HOST_NAME} -Dappdynamics.controller.port=${APPDYNAMICS_CONTROLLER_PORT}  -Dappdynamics.agent.accountAccessKey=${APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY} -Dappdynamics.agent.accountName=${APPDYNAMICS_AGENT_ACCOUNT_NAME} -Dappdynamics.controller.ssl.enabled=${APPDYNAMICS_CONTROLLER_SSL_ENABLED} -Dappdynamics.agent.applicationName=${APPDYNAMICS_APP_AGENT_APPLICATION_NAME} -Dappdynamics.agent.tierName=${APPDYNAMICS_APP_AGENT_TIER_NAME} -Dappdynamics.agent.nodeName=${APPDYNAMICS_APP_AGENT_NODE_NAME}"' >> /usr/local/tomcat/bin/setenv.sh
+
+#FROM appdynamics-agent-download:latest AS agent
+
+COPY --from=appdynamics-agent-download:latest /AppServerAgent*.zip /tmp
+
+RUN echo 'export CATALINA_OPTS="$CATALINA_OPTS -javaagent:/opt/appdynamics/appagent/javaagent.jar -Dappdynamics.controller.hostName=${APPDYNAMICS_CONTROLLER_HOST_NAME} -Dappdynamics.controller.port=${APPDYNAMICS_CONTROLLER_PORT}  -Dappdynamics.agent.accountAccessKey=${APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY} -Dappdynamics.agent.accountName=${APPDYNAMICS_AGENT_ACCOUNT_NAME} -Dappdynamics.controller.ssl.enabled=${APPDYNAMICS_CONTROLLER_SSL_ENABLED} -Dappdynamics.agent.applicationName=${APPDYNAMICS_APP_AGENT_APPLICATION_NAME} -Dappdynamics.agent.tierName=${APPDYNAMICS_APP_AGENT_TIER_NAME} -Dappdynamics.agent.nodeName=${APPDYNAMICS_APP_AGENT_NODE_NAME} "' >> /usr/local/tomcat/bin/setenv.sh
 
 RUN mkdir -p /opt/appdynamics/appagent
-ADD AppServerAgent*.zip /opt/appdynamics/appagent/
-RUN unzip /opt/appdynamics/appagent/AppServerAgent*.zip -d /opt/appdynamics/appagent/
+RUN unzip /tmp/AppServerAgent*.zip -d /opt/appdynamics/appagent/
 
 
