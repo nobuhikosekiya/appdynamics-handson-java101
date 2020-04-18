@@ -1,6 +1,6 @@
 FROM openjdk:8u151-jre-alpine3.7 AS builder
 
-COPY MachineAgent-*.zip /
+COPY --from=appdynamics-agent-download:latest /MachineAgent-*.zip /
 RUN mkdir /tmp/unzip \
     && unzip -oq MachineAgent-*.zip -d /tmp/unzip
 
